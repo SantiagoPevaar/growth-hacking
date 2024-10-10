@@ -16,7 +16,7 @@ namespace CustomEmailSender.Models
         [JsonProperty("timestamp")]
         public long Timestamp { get; set; }
 
-        [JsonIgnore]
+        [JsonProperty("datetime")]
         public DateTime EventTime => DateTimeOffset.FromUnixTimeSeconds(Timestamp).DateTime;    
         [JsonProperty("smtp-id")]
         public string? SmtpId { get; set; }
