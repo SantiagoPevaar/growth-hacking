@@ -37,7 +37,11 @@ namespace CustomEmailSender.Controllers
 
                 foreach (var response in webhookResponses)
                 {
-                    await _cosmosService.AddItemAsync(response);
+                    try
+                    {
+                        await _cosmosService.AddItemAsync(response);
+                    }
+                    catch (Exception){ }
                 }
 
                 return Ok("Webhook received successfully");
