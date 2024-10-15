@@ -14,7 +14,7 @@ namespace CustomEmailSender.Services
         }
         public async Task AddItemAsync<T>(T item)
         {
-            await _container.CreateItemAsync(item, new PartitionKey(item.GetType().GetProperty("Email").GetValue(item, null).ToString()));
+            await _container.CreateItemAsync(item, new PartitionKey(item.GetType().GetProperty("Event").GetValue(item, null).ToString()));
         }
 
         public async Task<T> GetItemAsync<T>(string id, string email)

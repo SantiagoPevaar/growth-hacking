@@ -5,7 +5,7 @@ namespace CustomEmailSender.Models
     public class WebHookResponse
     {
         [JsonProperty("id")]
-        public string? id => SmtpId;
+        public string? id => $"{Email}-{Event}";
 
         [JsonProperty("email")]
         public string Email { get; set; }
@@ -40,10 +40,18 @@ namespace CustomEmailSender.Models
         public string? Reason { get; set; }
         [JsonProperty("status")]
         public string? Status { get; set; }
-        [JsonProperty("bounce-type")]
+        [JsonProperty("bounce_classification")]
         public string? BounceType { get; set; }
-        [JsonProperty("click-type")]
-        public string? ClickType { get; set; }
+        [JsonProperty("asm_group_id")]
+        public string? AsmGroupId { get; set; }
+        [JsonProperty("type")]
+        public string? Type { get; set; }
+        [JsonProperty("sg_machine_open")]
+        public string? SgMachineOpen { get; set; }
+        [JsonProperty("marketing_campaign_id")]
+        public string? MarketingCampaignId { get; set; }
+        [JsonProperty("marketing_campaign_name")]
+        public string? MarketingCampaignName { get; set; }
       
         public WebHookResponse()
         {
