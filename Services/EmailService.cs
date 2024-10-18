@@ -35,7 +35,7 @@ namespace CustomEmailSender.Services
             }
             msg.AddHeader("X-Event-ID", GenerateGuid(campaign.RecipientEmail).ToString());
             msg.SetOpenTracking(true);
-            msg.SetClickTracking(true, true);
+            msg.SetClickTracking(true, false);
 
             var response = await client.SendEmailAsync(msg);
 
