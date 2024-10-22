@@ -4,44 +4,49 @@ using Microsoft.Extensions.Configuration;
 using CustomEmailSender.Models;
 using System.Security.Cryptography;
 using System.Text;
+using System.Net;
 
 namespace CustomEmailSender.Services
 {
     public class EmailService : IEmailService
     {
+        private readonly SendGridClient _client;
         private readonly IConfiguration _configuration;
 
         public EmailService(IConfiguration configuration)
         {
             _configuration = configuration;
+            _client = new SendGridClient(_configuration["SendGrid:ApiKey"]);
         }
 
         public async Task SendEmailAsync(EmailCampaign campaign)
         {
-            var apiKey = _configuration["SendGrid:ApiKey"];
-            var client = new SendGridClient(apiKey);
+            if (string.IsNullOrEmpty(campaign.SenderEmail) || string.IsNullOrEmpty(campaign.RecipientEmail))
+            {
+                throw new ArgumentException("Sender and recipient emails must be provided.");
+            }
 
             var from = new EmailAddress(campaign.SenderEmail, campaign.SenderName);
-            var subject = campaign.Subject;
             var to = new EmailAddress(campaign.RecipientEmail);
-            var plainTextContent = campaign.PlainTextContent;
-            var htmlContent = campaign.HtmlContent;
+            var subject = campaign.Subject;
+            var plainTextContent = campaign.PlainTextContent ?? string.Empty;
+            var htmlContent = campaign.HtmlContent ?? string.Empty;
 
             var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
-            foreach (var bccEmail in campaign.BBCEmails)
+
+            if (campaign.BBCEmails?.Any() == true)
             {
-                var bcc = new EmailAddress(bccEmail);
-                msg.AddBcc(bcc);
+                msg.AddBccs(campaign.BBCEmails.Select(email => new EmailAddress(email)).ToList());
             }
             msg.AddHeader("X-Event-ID", GenerateGuid(campaign.RecipientEmail).ToString());
             msg.SetOpenTracking(true);
             msg.SetClickTracking(true, false);
 
-            var response = await client.SendEmailAsync(msg);
-
+            var response = await _client.SendEmailAsync(msg);
             if (!response.IsSuccessStatusCode)
             {
-                throw new Exception($"Error sending email: {response.StatusCode}");
+                var errorBody = await response.Body.ReadAsStringAsync();
+                throw new Exception($"Error sending email: {response.StatusCode} - {errorBody}");
             }
         }
 
