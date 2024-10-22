@@ -26,13 +26,12 @@ namespace CustomEmailSender.Services
                 throw new ArgumentException("Sender and recipient emails must be provided.");
             }
 
-            var from = new EmailAddress(campaign.SenderEmail, campaign.SenderName);
-            var to = new EmailAddress(campaign.RecipientEmail);
-            var subject = campaign.Subject;
-            var plainTextContent = campaign.PlainTextContent ?? string.Empty;
-            var htmlContent = campaign.HtmlContent ?? string.Empty;
-
-            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            var msg = new SendGridMessage();
+            msg.SetFrom(new EmailAddress(campaign.SenderEmail, campaign.SenderName));
+            msg.SetSubject(campaign.Subject);
+            msg.AddTo(new EmailAddress(campaign.RecipientEmail));
+            msg.HtmlContent = campaign.HtmlContent ?? string.Empty;
+            msg.PlainTextContent = campaign.PlainTextContent ?? string.Empty;
 
             if (campaign.BBCEmails?.Any() == true)
             {
