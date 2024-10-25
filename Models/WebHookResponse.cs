@@ -5,7 +5,7 @@ namespace CustomEmailSender.Models
     public class WebHookResponse
     {
         [JsonProperty("id")]
-        public string? id => $"{Email}-{Event}-{EventTime}";
+        public string? id => $"{Email}-{Event}-{EventTime.ToString("yyyy-MM-ddTHH:mm:ss")}";
 
         [JsonProperty("email")]
         public string Email { get; set; }

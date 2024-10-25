@@ -9,6 +9,7 @@
         public List<string> BBCEmails { get; set; }
         public string HtmlContent { get; set; }
         public string PlainTextContent { get; set; }
+        public string Campaign { get; set; }
     }
 
 }
