@@ -39,7 +39,10 @@ namespace CustomEmailSender.Controllers
                 {
                     try
                     {
-                        await _cosmosService.AddItemAsync(response);
+                        if (!response.Email.Contains("pevaar.com"))
+                        {
+                            await _cosmosService.AddItemAsync(response); 
+                        }
                     }
                     catch (Exception){ }
                 }
