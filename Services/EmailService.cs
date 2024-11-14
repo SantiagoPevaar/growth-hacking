@@ -11,12 +11,10 @@ namespace CustomEmailSender.Services
     public class EmailService : IEmailService
     {
         private readonly SendGridClient _client;
-        private readonly IConfiguration _configuration;
 
         public EmailService(IConfiguration configuration)
         {
-            _configuration = configuration;
-            _client = new SendGridClient(_configuration["SendGrid:ApiKey"]);
+            _client = new SendGridClient(configuration["SendGrid:ApiKey"]);
         }
 
         public async Task SendEmailAsync(EmailCampaign campaign)

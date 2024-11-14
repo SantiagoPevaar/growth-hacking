@@ -21,6 +21,7 @@ namespace CustomEmailSender
             });
             builder.Services.AddSingleton<ICosmosService, CosmosService>(); 
             builder.Services.AddSingleton<IEmailService, EmailService>();
+            builder.Services.AddSingleton<IEmailValidationService, EmailValidationService>();
 
             builder.Configuration
                 .SetBasePath(Directory.GetCurrentDirectory())
