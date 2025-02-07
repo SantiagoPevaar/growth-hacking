@@ -39,7 +39,7 @@ namespace CustomEmailSender.Controllers
                 {
                     try
                     {
-                        if (!response.Email.Contains("pevaar.com"))
+                        if (!response.Email.Contains("pevaar.com") && response.Category.Count != 0)
                         {
                             await _cosmosService.AddItemAsync(response); 
                         }
