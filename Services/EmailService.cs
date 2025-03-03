@@ -36,6 +36,8 @@ namespace CustomEmailSender.Services
                 msg.AddBccs(campaign.BBCEmails.Select(email => new EmailAddress(email)).ToList());
             }
             msg.AddCategory(campaign.Campaign);
+            msg.AddCustomArg("user_id", campaign.UserId);
+            msg.AddCustomArg("send_date", campaign.SendDate);
             msg.AddHeader("X-Event-ID", GenerateGuid(campaign.RecipientEmail).ToString());
             msg.SetOpenTracking(true);
             msg.SetClickTracking(true, false);

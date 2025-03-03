@@ -10,6 +10,8 @@
         public string HtmlContent { get; set; }
         public string PlainTextContent { get; set; }
         public string Campaign { get; set; }
+        public string UserId { get; set; }
+        public string SendDate { get; set; }
     }
 
 }

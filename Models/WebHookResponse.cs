@@ -52,7 +52,11 @@ namespace CustomEmailSender.Models
         public string? MarketingCampaignId { get; set; }
         [JsonProperty("marketing_campaign_name")]
         public string? MarketingCampaignName { get; set; }
-      
+        [JsonProperty("user_id")]
+        public string UserId { get; set; }
+        [JsonProperty("send_date")]
+        public string SendDate { get; set; }
+
         public WebHookResponse()
         {
             Category = new List<string>();
